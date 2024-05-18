@@ -2,6 +2,7 @@ import io
 import base64
 import requests
 import RPi.GPIO as GPIO
+import keyboard
 from picamera2 import Picamera2
 from time import sleep
 import pygame
@@ -114,6 +115,11 @@ try:
             print("Button pressed, capturing image...")
             capture_and_process_image()
             sleep(1)  # Debounce delay
+    
+        if keyboard.is_pressed('space'):
+            print("Keyboard pressed, capturing image...")
+            capture_and_process_image()
+            sleep(1)
 finally:
     GPIO.cleanup()
     picam2.stop()
