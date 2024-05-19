@@ -5,8 +5,14 @@ import requests
 import RPi.GPIO as GPIO
 import keyboard
 from picamera2 import Picamera2
-from time import sleep
+import time
 import pygame
+import sys
+import select
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # Initialize the camera
 picam2 = Picamera2()
@@ -22,7 +28,6 @@ GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # Initialize pygame mixer
 pygame.mixer.init()
 
-#TODO Place api keys in an environmental variable.
 # OpenAI API Key
 
 api_key2 = os.getenv('OPEN_AI_KEY2')
@@ -103,7 +108,7 @@ def capture_and_process_image():
             pygame.mixer.music.load(audio_path)
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy():
-                sleep(1)
+                time.sleep(1)
     else:
         print(f"Failed to get description. Status code: {response.status_code}, Response: {response.text}")
 
@@ -115,12 +120,14 @@ try:
         if button_state == GPIO.LOW:  # Button is pressed
             print("Button pressed, capturing image...")
             capture_and_process_image()
-            sleep(1)  # Debounce delay
+            time.sleep(1)  # Debounce delay
     
-        if keyboard.is_pressed('space'):
-            print("Keyboard pressed, capturing image...")
-            capture_and_process_image()
-            sleep(1)
+        if select.select([sys.stdin], [], [], 0)[0]:
+            key = sys.stdin.read(1)
+            if key == ' ':
+                print("Space bar pressed, capturing image...")
+                capture_and_process_image()
+                time.sleep(1)  # Debounce delay
 finally:
     GPIO.cleanup()
     picam2.stop()
