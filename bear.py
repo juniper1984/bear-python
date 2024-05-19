@@ -21,7 +21,7 @@ GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # Initialize pygame mixer
 pygame.mixer.init()
 
-#TODO Place api keys in an environmental variable.
+#Current iteration uses env variables within a .env file. Will commit shortly.
 # OpenAI API Key
 api_key = "API KEY HERE"
 api_key2 = "API KEY HERE"
@@ -115,7 +115,7 @@ try:
             print("Button pressed, capturing image...")
             capture_and_process_image()
             sleep(1)  # Debounce delay
-    
+        #this is for testing purposes
         if keyboard.is_pressed('space'):
             print("Keyboard pressed, capturing image...")
             capture_and_process_image()
