@@ -1,4 +1,5 @@
 import io
+import os
 import base64
 import requests
 import RPi.GPIO as GPIO
@@ -23,8 +24,8 @@ pygame.mixer.init()
 
 #TODO Place api keys in an environmental variable.
 # OpenAI API Key
-api_key = "API KEY HERE"
-api_key2 = "API KEY HERE"
+
+api_key2 = os.getenv('OPEN_AI_KEY2')
 
 # Function to encode the image
 def encode_image(image_path):
